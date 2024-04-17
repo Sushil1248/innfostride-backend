@@ -24,20 +24,18 @@ const getProfile = async (req, res) => {
       throw new CustomError(404, 'User not found');
     }
 
-
     const userProfile = {
       _id: user._id,
       username: user.username,
       email: user.email,
       firstName: user.firstName,
-      bio: user.bio,
-      profile_pic: user.profile_pic,
+      bio: user.bio|| '',
+      profile_pic: user.profile_pic || '',
       lastName: user.lastName,
       roles: user.role?.name,
       permissions: user.permissions.map(({ name, module }) => ({ name, module }))
-
     };
-
+      console.log(userProfile);
     ResponseHandler.success(res, userProfile, 200);
   } catch (error) {
     ErrorHandler.handleError(error, res);
