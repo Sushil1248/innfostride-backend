@@ -27,18 +27,14 @@ const generateRandomString = (length) => {
 };
 
 const register = async (req, res) => {
-  console.log("red", req)
   try {
-    console.log("red")
     AuthValidator.validateRegistration(req.body);
     const { username, password, email, firstName, lastName, department, emp_code } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ username, password: hashedPassword, email, firstName, lastName, department, emp_code });
     await newUser.save();
-
     ResponseHandler.success(res, { message: 'User registered successfully' }, HTTP_STATUS_CODES.OK);
   } catch (error) {
-    console.log(error.message)
     ErrorHandler.handleError(error, res);
   }
 };
@@ -139,6 +135,7 @@ const login = async (req, res) => {
 
     if (form_type === 'login_form') {
       otp = generateRandomString(6);
+      console.log(otp, "OTP")
 
       // When user tries to login we will save its OTP and OTP Expiry
       user.otp = otp;
